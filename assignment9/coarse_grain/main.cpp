@@ -2,9 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include <thread>
+#include <mutex>
 #include "Dictionary.hpp"
 #include "MyHashtable.hpp"
+
+
+
 
 //Tokenize a string into individual word, removing punctuation at the
 //end of words
@@ -44,7 +48,15 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
   }
   return ret;
 }
-
+void func(Dictionary<std::string,int>&dict,std::vector<std::string>filecontent,std::mutex&mut)
+{
+  for (auto & w : filecontent) {
+    mut.lock();
+      int count = dict.get(w);
+      ++count;
+      dict.set(w, count);
+      mut.unlock();
+  }}
 
 
 int main(int argc, char **argv)
@@ -73,10 +85,27 @@ int main(int argc, char **argv)
   MyHashtable<std::string, int> ht;
   Dictionary<std::string, int>& dict = ht;
 
+  std::vector<std::thread> th1;
+  std::mutex m1;
 
+  
+  // Start Timer
+  auto start =std::chrono::steady_clock::now();
 
+  
   // write code here
-
+  for (int i=0;i<wordmap.size();i++) {
+    th1.push_back(std::thread(func, std::ref(dict),std::ref(wordmap[i]),std::ref(m1)));
+  
+  }
+  for(auto & t:th1){
+    t.join();
+  }
+    // Stop Timer
+  auto stop = std::chrono::steady_clock::now();
+  std::chrono::duration<double> time_elapsed = stop-start;
+  }
+  
 
 
 

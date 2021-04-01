@@ -1,3 +1,4 @@
+#include <iostream>
 #include <chrono>
 #include <fstream>
 #include <sstream>
@@ -48,7 +49,7 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
   }
   return ret;
 }
-void func(Dictionary<std::string,int>&dict,std::vector<std::string>filecontent,std::mutex&mut)
+void func(Dictionary<std::string,int> &dict,std::vector<std::string> filecontent,std::mutex &mut)
 {
   for (auto & w : filecontent) {
     mut.lock();
@@ -104,7 +105,7 @@ int main(int argc, char **argv)
     // Stop Timer
   auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
-  }
+    std::cerr << time_elapsed.count()<<"\n";
   
 
 

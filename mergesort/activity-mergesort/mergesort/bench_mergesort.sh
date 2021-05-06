@@ -13,20 +13,22 @@ if [ ! -d ${RESULTDIR} ];
 then
     mkdir ${RESULTDIR}
 fi
-    
 
 
 source ../params.sh
+#NS="10000 1000000 100000000 1000000000"
+#THREADS="1 2 4 8 12 16"
 
-echo running on ${h}
-echo seq: starting bench at $(date)
 
-for intensity in $INTENSITIES;
+# bench
+echo starting time is $(date)
+
+for n in ${MERGESORT_NS};
 do
-    for n in $NSPLOT;
+    for t in ${THREADS};
     do
-	./sequential 1 0 10 ${n} ${intensity} 2>${RESULTDIR}/sequential_${n}_${intensity}  >/dev/null
+	./mergesort $n $t >/dev/null 2> ${RESULTDIR}/mergesort_${n}_${t}
     done
 done
-
-echo seq: ending bench at $(date)
+	     
+echo ending time is $(date)

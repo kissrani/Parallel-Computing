@@ -1,5 +1,6 @@
 CFLAGS=-O3 -std=c11 -fPIC -g 
 CXXFLAGS=-O3 -std=c++17 -fPIC -g 
+LDFLAGS=-fopenmp
 ARCHIVES=../libgen.a
 LD=g++
 
@@ -24,7 +25,7 @@ clean:
 	-rm mergesort
 
 distclean:
-	-rm *.sh.*
+	-rm .sh.
 
 
 .PHONY:  mergesort
